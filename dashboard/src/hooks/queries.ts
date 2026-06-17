@@ -56,47 +56,6 @@ export function useSessionGroupsQuery(sessionId: string, enabled: boolean) {
   });
 }
 
-export function useSessionChatsQuery(sessionId: string, enabled: boolean) {
-  return useQuery({
-    queryKey: queryKeys.sessionChats(sessionId),
-    queryFn: () => sessionApi.getChats(sessionId),
-    enabled: enabled && !!sessionId,
-    staleTime: 10_000,
-  });
-}
-
-export function useCreateSessionMutation() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (name: string) => sessionApi.create(name),
-    onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: queryKeys.sessions });
-      void queryClient.invalidateQueries({ queryKey: queryKeys.sessionStats });
-    },
-  });
-}
-
-export function useDeleteSessionMutation() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (id: string) => sessionApi.delete(id),
-    onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: queryKeys.sessions });
-      void queryClient.invalidateQueries({ queryKey: queryKeys.sessionStats });
-    },
-  });
-}
-
-export function useStartSessionMutation() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (id: string) => sessionApi.start(id),
-    onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: queryKeys.sessions });
-    },
-  });
-}
-
 export function useStopSessionMutation() {
   const queryClient = useQueryClient();
   return useMutation({
